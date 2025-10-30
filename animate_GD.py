@@ -3,6 +3,7 @@ from matplotlib.animation import FuncAnimation, FFMpegWriter
 from IPython.display import HTML
 from GD_utils import make_2D_loss_surface
 
+# Just to avoid Python Typechecker annoyance
 from typing import cast
 from matplotlib.figure import Figure
 
@@ -19,12 +20,13 @@ def animate_GD(
   ):
   contour = make_2D_loss_surface(X, wi, bi)
   fig, ax = contour.figure, contour.axes
-  fig = cast(Figure, fig)
+  fig = cast(Figure, fig) # To avoid type annoyance
 
   w, b, Z = getattr(contour, "_grid")
   contour = ax.contourf(w, b, Z, levels=20)
   ax.set_title(f"Epoch: 1", fontsize=14, color="black", pad=20)
 
+  # ========== Storing current point and path history for all gradient descents ==========
   gd_info = []
   for i in range(len(GDs)):
     point, = ax.plot([], [], 'ro', zorder=3)
@@ -32,6 +34,7 @@ def animate_GD(
     w_hist, b_hist = [], []
     gd_info.append((point, path, (w_hist, b_hist)))
 
+  # ========== Frame generation function ==========
   def update(frame, GDs):
     artists = []
     for i in range(len(GDs)):
@@ -60,6 +63,7 @@ def animate_GD(
   ax.set_ylabel("b")
 
   if save_as:
-    writer = FFMpegWriter(fps=15, bitrate=1800)
+    writer = FFMpegWriter(fps=15, bitrate=1800) # To generate as video instead of GIF
     return ani.save(f"{"".join(save_as.split(".")[:-1])}.mp4", writer=writer)
+  
   return HTML(ani.to_jshtml())

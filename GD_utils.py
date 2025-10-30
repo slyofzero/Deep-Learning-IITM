@@ -2,11 +2,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 import plotly.graph_objects as go
 
-# Sigmoid Function
+# ============================== Sigmoid Function ==============================
 def sigmoid(x, w, b):
   return 1 / (1 + np.exp(-(w*x + b)))
 
-# Mean Squared Error
+# ============================== Mean Squared Error ==============================
 def MSE(X, Y, w, b):
   total_error = 0
 
@@ -22,8 +22,15 @@ def MSE_grad_w(y_pred: float, x: float, y: float):
 def MSE_grad_b(y_pred: float, y: float):
   return (y_pred - y) * y_pred * (1 - y_pred)
 
-# Loss surface
+# ============================== Loss surface ==============================
 def prepare_loss_surface(X, wi, bi, function="sigmoid", loss="MSE", mu=10):
+  '''
+  `X` is the input.\n
+  `wi` is the original function's weight.\n
+  `bi` is the original function's bias.\n
+  `mu` is to create a range around both `w` and `b`.
+  '''
+
   g = sigmoid if function == "sigmoid" else sigmoid
   loss = MSE if function == "MSE" else MSE
 
@@ -37,6 +44,7 @@ def prepare_loss_surface(X, wi, bi, function="sigmoid", loss="MSE", mu=10):
 
   return w, b, W, B, Z
 
+# ========== Filled Contour Plot ==========
 def make_2D_loss_surface(X, wi, bi, function="sigmoid", loss="MSE", mu=10):
   w, b, *_, Z = prepare_loss_surface(X, wi, bi, function, loss, mu)
 
@@ -50,6 +58,7 @@ def make_2D_loss_surface(X, wi, bi, function="sigmoid", loss="MSE", mu=10):
 
   return contour
 
+# ========== Plotly 3D surface Plot ==========
 def make_3D_loss_surface(X, wi, bi, function="sigmoid", loss="MSE", mu=10):
   *_, W, B, Z = prepare_loss_surface(X, wi, bi, function, loss, mu)
 
