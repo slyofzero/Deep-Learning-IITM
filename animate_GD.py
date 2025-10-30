@@ -3,7 +3,7 @@ from matplotlib.animation import FuncAnimation, FFMpegWriter
 from IPython.display import HTML
 
 def animate_GD(
-    contour_data,
+    contour,
     GDs, 
     labels=[], 
     skip_epochs=10, 
@@ -11,10 +11,10 @@ def animate_GD(
     frames=200, 
     interval=50
   ):
-  fig, ax = plt.subplots(figsize=(10, 8))
-  w, b, Z = contour_data
+  fig = contour.figure
+  ax = contour.axes
+  w, b, Z = getattr(contour, "_grid")
   contour = ax.contourf(w, b, Z, levels=20)
-  fig.colorbar(contour, ax=ax, label="Error")
   ax.set_title(f"Epoch: 1", fontsize=14, color="black", pad=20)
 
   gd_info = []
