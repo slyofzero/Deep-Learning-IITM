@@ -1,9 +1,15 @@
 import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation, FFMpegWriter
 from IPython.display import HTML
+from GD_utils import make_2D_loss_surface
+
+from typing import cast
+from matplotlib.figure import Figure
 
 def animate_GD(
-    contour,
+    X,
+    wi,
+    bi,
     GDs, 
     labels=[], 
     skip_epochs=10, 
@@ -11,8 +17,10 @@ def animate_GD(
     frames=200, 
     interval=50
   ):
-  fig = contour.figure
-  ax = contour.axes
+  contour = make_2D_loss_surface(X, wi, bi)
+  fig, ax = contour.figure, contour.axes
+  fig = cast(Figure, fig)
+
   w, b, Z = getattr(contour, "_grid")
   contour = ax.contourf(w, b, Z, levels=20)
   ax.set_title(f"Epoch: 1", fontsize=14, color="black", pad=20)

@@ -1,0 +1,11 @@
+# Ignore All
+*
+
+# Except these
+!.gitignore
+
+!GD_utils.py
+!animate_GD.py
+
+!Practical/
+!Practical/**.ipynb
